@@ -1,10 +1,32 @@
 [![NPM version](https://img.shields.io/npm/v/csso.svg)](https://www.npmjs.com/package/csso)
-[![Build Status](https://github.com/css/csso/actions/workflows/build.yml/badge.svg)](https://github.com/css/csso/actions/workflows/build.yml)
+[![Build Status](https://github.com/css/csso/actions/workflows/go.yml/badge.svg)](https://github.com/css/csso/actions/workflows/go.yml)
 [![Coverage Status](https://coveralls.io/repos/github/css/csso/badge.svg?branch=master)](https://coveralls.io/github/css/csso?branch=master)
 [![NPM Downloads](https://img.shields.io/npm/dm/csso.svg)](https://www.npmjs.com/package/csso)
 [![Twitter](https://img.shields.io/badge/Twitter-@cssoptimizer-blue.svg)](https://twitter.com/cssoptimizer)
 
 CSSO (CSS Optimizer) is a CSS minifier. It performs three sort of transformations: cleaning (removing redundants), compression (replacement for the shorter forms) and restructuring (merge of declarations, rules and so on). As a result an output CSS becomes much smaller in size.
+
+## Go
+
+This repository is csso 5.0.5 as a Go module, `github.com/css/csso-go` (Go 1.27, standard library
+only), with css-tree 2.2.0 (parser, generator, source maps, walker and the lexer over mdn-data 2.0.28)
+ported alongside it. The API follows the JavaScript one:
+
+```go
+import "github.com/css/csso-go"
+
+res, err := csso.Minify(".test { color: #ff0000; }")
+// res.CSS == ".test{color:red}"
+
+res, err = csso.Minify(css, csso.Options{SourceMap: true, Filename: "app.css"})
+// res.Map.String() is the source map JSON
+```
+
+`csso.MinifyBlock`, `csso.Parse`, `(*csso.AST).Generate`, `csso.Compress` and the `Options` and
+`Usage` types are documented in the package (`go doc github.com/css/csso-go`). What differs from the
+JavaScript version is listed in [MIGRATION.md](MIGRATION.md). Run the tests with `go test ./...`.
+
+The sections below describe the original JavaScript API, which the Go functions mirror.
 
 ## Install
 
